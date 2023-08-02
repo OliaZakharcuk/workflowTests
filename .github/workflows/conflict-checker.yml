@@ -18,10 +18,9 @@ jobs:
         with:
           github-token: ${{ secrets.ACTIONS_TOKEN }}
           script: |
-            const prList = await github.rest.pulls({
-                pull_number: 1,
+            const prList = await github.rest.pulls.get({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                state: "open",
+                pull_number: 1,
               });
-              console.log(prList.data);
+            console.log(prList.data);
