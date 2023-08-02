@@ -1,8 +1,6 @@
 name: Find merge conflicts
 
 on:
-  pull_request:
-    branches: ["master"]
   push:
     branches:
       - "master"
@@ -20,13 +18,9 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-           const removeLabel = (labelName) => {
-              if(labels.data.some(l => l.name === labelName)){
-                github.rest.issues.removeLabel({
-                  issue_number: context.issue.number,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  name: [labelName]
-                })     
-              }
-            }
+            const prList = await github.rest.pulls.list({
+                owner,
+                repo,
+                state: "all",
+              });
+              console.log(prList.data);
