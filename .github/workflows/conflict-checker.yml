@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.ACTIONS_TOKEN }}
           script: |
             const prList = await github.rest.pulls.list({
                 owner,
