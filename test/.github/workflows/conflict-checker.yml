@@ -1,0 +1,32 @@
+name: Find merge conflicts
+
+on:
+  pull_request:
+    branches: ["master"]
+  push:
+    branches:
+      - "master"
+
+env:
+  
+  MERGE_CONFLICT: "error | merge conflict"
+  
+
+jobs:
+  check_pr_open_events:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+           const removeLabel = (labelName) => {
+              if(labels.data.some(l => l.name === labelName)){
+                github.rest.issues.removeLabel({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: [labelName]
+                })     
+              }
+            }
