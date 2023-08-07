@@ -3,6 +3,9 @@ name: Find merge conflicts
 on:
   pull_request:
     types: [ synchronize ]
+  push:
+    branches:
+      - "main"
 
 env:
   
