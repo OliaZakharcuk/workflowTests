@@ -19,7 +19,7 @@ jobs:
         with:
           github-token: ${{ secrets.ACTIONS_TOKEN }}
           script: |
-            async function getPullsNumber(owner, repo, branchName) {
+            async function getPullsNumber() {
               const prList = await github.rest.pulls.list({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -31,18 +31,23 @@ jobs:
               return numberList
             }
 
+            async function getPullDetails(pullsNumber) {
+              pullsNumber.forEach((number) => {
+                const pr = await github.rest.pulls.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: number,
+                });
+
+                if (pr.data.mergeable_state == "dirty") {
+                  console.warn('Meow!!!!!!!!!!!!!');
+                }
+                else {
+                  console.log(pr.data.mergeable_state)
+                }
+              })
+            }
+
             const pullsNumber = await getPullsNumber();
-            console.log(pullsNumber)
-
-            pullsNumber.forEach((number) => {
-              const pr = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: number,
-              });
-
-              if (pr_new.data.mergeable_state == "dirty") {
-                console.warn('Meow!!!!!!!!!!!!!');
-              }
-            })
+            getPullDetails(pullsNumber)
 
