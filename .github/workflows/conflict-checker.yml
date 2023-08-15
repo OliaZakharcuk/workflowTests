@@ -18,11 +18,23 @@ jobs:
     steps:
       - uses: actions/github-script@v6
         with:
+          retries: 3
           github-token: ${{ secrets.ACTIONS_TOKEN }}
           script: |
-            const prList = await github.rest.pulls.get({
+            try {
+              const pr = await github.rest.pulls.get({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: 1,
               });
-            console.log(prList.data);
+            } catch (error) {
+              console.error(error.message);
+              return
+            }
+
+            if (pr.data.mergeable_state == "unknown") {
+              core.setFailed('State is unknown, GitHub didn`t finish the checks');
+              return;
+            }
+
+            console.log(pr.data.mergeable_state);
