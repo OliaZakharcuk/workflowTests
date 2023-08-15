@@ -15,31 +15,26 @@ jobs:
   check_pr_open_events:
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/github-script@v6
-      #   with:
-      #     github-token: ${{ secrets.ACTIONS_TOKEN }}
-      #     script: |
-      #       const pr = await github.rest.pulls.get({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         pull_number: 1,
-      #       });
-      #       console.log(pr.data.mergeable_state);
-      - uses: Wandalen/wretry.action@master
+      - uses: actions/github-script@v6
         with:
-          action: actions/github-script@v6
-          attempt_delay: 5
-          attempt_limit: 5
-          with: |
-            github-token: ${{ secrets.ACTIONS_TOKEN }}
-            script: |
-              const pr = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: 1,
-              });
-              if (pr.data.mergeable_state == "unknown") {
-                console.error("Fail");
-                return;
-              }
-              console.log(pr.data.mergeable_state);
+          github-token: ${{ secrets.ACTIONS_TOKEN }}
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: 1,
+            });
+            console.log(pr.data.mergeable_state);
+      - name: Sleep for 30 seconds
+        run: sleep 30s
+        shell: bash
+      - uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.ACTIONS_TOKEN }}
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: 1,
+            });
+            console.log(pr.data.mergeable_state);
