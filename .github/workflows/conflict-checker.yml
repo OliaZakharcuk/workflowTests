@@ -39,6 +39,7 @@ jobs:
                   repo: context.repo.repo,
                   pull_number: number,
                 })
+                console.log(pr)
                 pullDetails.push(pr.data.mergeable_state)
               })
               console.log(pullDetails)
