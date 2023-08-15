@@ -31,7 +31,7 @@ jobs:
               return numberList
             }
 
-            console.log(getPullDesciption());
+            console.log(await getPullDesciption());
 
       #       const pr = await github.rest.pulls.get({
       #         owner: context.repo.owner,
