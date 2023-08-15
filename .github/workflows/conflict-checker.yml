@@ -34,25 +34,17 @@ jobs:
 
             const pullsNumber = await getPullsNumber();
 
-            pullsNumber.forEach((number) => {
-              const pr = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: number,
-              });
+            # pullsNumber.forEach((number) => {
+            #   const pr = await github.rest.pulls.get({
+            #     owner: context.repo.owner,
+            #     repo: context.repo.repo,
+            #     pull_number: number,
+            #   });
 
-              # setTimeout(function() {
-              #   const pr_new = await github.rest.pulls.get({
-              #     owner: context.repo.owner,
-              #     repo: context.repo.repo,
-              #     pull_number: number,
-              #   });
-              # }, 20000);
-
-              if (pr_new.data.mergeable_state == "dirty") {
-                console.warn('Meow!!!!!!!!!!!!!');
-              }
-            })
+            #   if (pr_new.data.mergeable_state == "dirty") {
+            #     console.warn('Meow!!!!!!!!!!!!!');
+            #   }
+            # })
 
 
       #       const pr = await github.rest.pulls.get({
