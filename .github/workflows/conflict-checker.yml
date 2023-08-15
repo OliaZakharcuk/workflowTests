@@ -39,7 +39,7 @@ jobs:
                   repo: context.repo.repo,
                   pull_number: number,
                 }))
-              }
+              })
               console.log(pullDetails)
             }
 
