@@ -31,23 +31,19 @@ jobs:
               return numberList
             }
 
-            async function getPullDetails(pullsNumber) {
+            async function getPullDetails(pullNumbers) {
+              const pullDetails = []
               pullsNumber.forEach(async (number) => {
-                const pr = await github.rest.pulls.get({
+                pullDetails.push(await github.rest.pulls.get({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   pull_number: number,
-                });
-
-                if (pr.data.mergeable_state == "dirty") {
-                  console.warn('Meow!!!!!!!!!!!!!');
-                }
-                else {
-                  console.log(pr.data.mergeable_state)
-                }
-              })
+                });)
+              }
+              console.log(pullDetails)
             }
 
             const pullsNumber = await getPullsNumber();
             getPullDetails(pullsNumber)
 
+            setTimeout(getPullDetails, 20000, pullsNumber)
