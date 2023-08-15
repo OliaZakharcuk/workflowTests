@@ -25,9 +25,9 @@ jobs:
               pull_number: 1,
             });
             console.log(pr.data.mergeable_state);
-      - name: Sleep for 30 seconds
-        run: sleep 30s
-        shell: bash
+      # - name: Sleep for 30 seconds
+      #   run: sleep 30s
+      #   shell: bash
       - uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.ACTIONS_TOKEN }}
