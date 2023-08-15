@@ -31,38 +31,6 @@ jobs:
               return numberList
             }
 
-
             const pullsNumber = await getPullsNumber();
+            console.log(pullsNumber)
 
-            # pullsNumber.forEach((number) => {
-            #   const pr = await github.rest.pulls.get({
-            #     owner: context.repo.owner,
-            #     repo: context.repo.repo,
-            #     pull_number: number,
-            #   });
-
-            #   if (pr_new.data.mergeable_state == "dirty") {
-            #     console.warn('Meow!!!!!!!!!!!!!');
-            #   }
-            # })
-
-
-      #       const pr = await github.rest.pulls.get({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         pull_number: 1,
-      #       });
-      #       console.log(pr.data.mergeable_state);
-      # - name: Sleep for 30 seconds
-      #   run: sleep 30s
-      #   shell: bash
-      # - uses: actions/github-script@v6
-      #   with:
-      #     github-token: ${{ secrets.ACTIONS_TOKEN }}
-      #     script: |
-      #       const pr = await github.rest.pulls.get({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         pull_number: 1,
-      #       });
-      #       console.log(pr.data.mergeable_state);
