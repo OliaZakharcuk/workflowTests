@@ -33,7 +33,7 @@ jobs:
 
             async function getPullDetails(pullNumbers) {
               const pullDetails = []
-              pullsNumber.forEach(async (number) => {
+              pullNumbers.forEach(async (number) => {
                 pullDetails.push(await github.rest.pulls.get({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
