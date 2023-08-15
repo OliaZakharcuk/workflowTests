@@ -25,10 +25,9 @@ jobs:
               repo: context.repo.repo,
               pull_number: 1,
             });
-
-            if (pr.data.mergeable_state == "unknown") {
-              core.setFailed('State is unknown, GitHub didn`t finish the checks');
-              return;
-            }
-
-            console.log(pr.data.mergeable_state);
+            const checks = await github.rest.checks.listForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: pr.data.head.ref,
+            });
+            console.log(checks);
