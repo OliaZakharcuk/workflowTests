@@ -38,7 +38,7 @@ jobs:
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   pull_number: number,
-                });)
+                }))
               }
               console.log(pullDetails)
             }
