@@ -57,3 +57,4 @@ jobs:
             const pullsNumber = await getPullsNumber();
             getPullDetails(pullsNumber);
             setTimeout(getPullDetails, 20000, pullsNumber)
+            
