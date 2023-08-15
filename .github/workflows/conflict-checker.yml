@@ -41,13 +41,13 @@ jobs:
                 pull_number: number,
               });
 
-              setTimeout(function() {
-                const pr_new = await github.rest.pulls.get({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  pull_number: number,
-                });
-              }, 20000);
+              # setTimeout(function() {
+              #   const pr_new = await github.rest.pulls.get({
+              #     owner: context.repo.owner,
+              #     repo: context.repo.repo,
+              #     pull_number: number,
+              #   });
+              # }, 20000);
 
               if (pr_new.data.mergeable_state == "dirty") {
                 console.warn('Meow!!!!!!!!!!!!!');
