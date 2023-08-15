@@ -8,9 +8,8 @@ on:
       - "main"
 
 env:
-  
   MERGE_CONFLICT: "error | merge conflict"
-  
+
 
 jobs:
   check_pr_open_events:
