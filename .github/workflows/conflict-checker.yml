@@ -34,11 +34,12 @@ jobs:
             async function getPullDetails(pullNumbers) {
               const pullDetails = []
               pullNumbers.forEach(async (number) => {
-                pullDetails.push(await github.rest.pulls.get({
+                const pr = await github.rest.pulls.get({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   pull_number: number,
-                }))
+                })
+                pullDetails.push(pr.data.mergeable_state)
               })
               console.log(pullDetails)
             }
