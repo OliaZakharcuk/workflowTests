@@ -20,16 +20,11 @@ jobs:
           retries: 3
           github-token: ${{ secrets.ACTIONS_TOKEN }}
           script: |
-            try {
-              const pr = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: 1,
-              });
-            } catch (error) {
-              console.error(error.message);
-              return
-            }
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: 1,
+            });
 
             if (pr.data.mergeable_state == "unknown") {
               core.setFailed('State is unknown, GitHub didn`t finish the checks');
