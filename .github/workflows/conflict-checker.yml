@@ -27,7 +27,7 @@ jobs:
               });
 
               const numberList = []
-              prList.map((pr) => { numberList.push(pr.data.number) })
+              prList.forEach((pr) => { numberList.push(pr.data.number) })
               return numberList
             }
 
