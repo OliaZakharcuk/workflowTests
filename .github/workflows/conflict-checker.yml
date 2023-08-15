@@ -19,6 +19,8 @@ jobs:
         with:
           github-token: ${{ secrets.ACTIONS_TOKEN }}
           script: |
+            const { MERGE_CONFLICT } = process.env;
+            
             async function getPullsNumber() {
               const prList = await github.rest.pulls.list({
                 owner: context.repo.owner,
@@ -39,10 +41,17 @@ jobs:
                   repo: context.repo.repo,
                   pull_number: number,
                 })
-                console.log(pr)
-                pullDetails.push(pr.data.mergeable_state)
+
+                if (pr.data.mergeable_state == "dirty") {
+                  github.rest.issues.addLabels({
+                    issue_number: number,
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    labels: MERGE_CONFLICT,
+                  })
+                }
+
               })
-              console.log(pullDetails)
             }
 
             const pullsNumber = await getPullsNumber();
