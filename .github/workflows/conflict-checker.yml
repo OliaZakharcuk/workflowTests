@@ -1,8 +1,6 @@
 name: Find merge conflicts
 
 on:
-  pull_request:
-    types: [ synchronize ]
   push:
     branches:
       - "main"
@@ -25,7 +23,7 @@ jobs:
               const prList = await github.rest.pulls.list({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                state: "all",
+                state: "open",
               });
 
               const numberList = []
@@ -33,7 +31,7 @@ jobs:
               return numberList
             }
 
-            async function getPullDetails(pullNumbers) {
+            async function addMergeConflictLabel(pullNumbers) {
               const pullDetails = []
               pullNumbers.forEach(async (number) => {
                 const pr = await github.rest.pulls.get({
@@ -55,6 +53,6 @@ jobs:
             }
 
             const pullsNumber = await getPullsNumber();
-            getPullDetails(pullsNumber);
-            setTimeout(getPullDetails, 20000, pullsNumber)
+            addMergeConflictLabel(pullsNumber);
+            setTimeout(addMergeConflictLabel, 20000, pullsNumber)
             
