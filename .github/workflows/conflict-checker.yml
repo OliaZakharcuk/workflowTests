@@ -46,7 +46,7 @@ jobs:
               return dict
             }
             
-            const numbers = getPullsNumber();
+            const numbers = await getPullsNumber();
             var dict = {};
             numbers.forEach((e)=> {
                 dict[e] = null;
