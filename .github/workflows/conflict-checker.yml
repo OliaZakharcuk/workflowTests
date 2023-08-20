@@ -57,17 +57,22 @@ jobs:
 
             const pullsNumber = await getPullsNumber();
             const myMap = addMergeConflictLabel(pullsNumber);
-            for(let i = 0; i < 5; i++){
-              
-              for (const [key, value] of myMap.entries()) {
-                if(value !== "unknown"){
-                  myMap.delete(key);
-                }
-                
-              }
-              let newNumbers = Array.from(myMap.keys());
-              setTimeout( 5000);
-              const myMap = addMergeConflictLabel(newNumbers);
+            for (const [key, value] of myMap.entries()) {
+              console.log(key, value);
             }
+
+
+            # for(let i = 0; i < 5; i++){
+              
+            #   for (const [key, value] of myMap.entries()) {
+            #     if(value !== "unknown"){
+            #       myMap.delete(key);
+            #     }
+                
+            #   }
+            #   let newNumbers = Array.from(myMap.keys());
+            #   setTimeout( 5000);
+            #   const myMap = addMergeConflictLabel(newNumbers);
+            # }
            
             
