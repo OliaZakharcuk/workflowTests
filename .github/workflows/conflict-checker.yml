@@ -56,7 +56,7 @@ jobs:
             let data = {}
             for (let i=0; i < 5; i++) {
                 console.log(i, "STEP!!!!!") 
-                data = getState(dict)
+                data = await getState(dict)
                 console.log(data, "Inside of retry")
                 const margeableStates = Object.values(dict);
                 const isUnknown = false
