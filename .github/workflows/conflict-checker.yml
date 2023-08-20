@@ -30,49 +30,49 @@ jobs:
               prList.data.forEach((pr) => { numberList.push(pr.number) })
               return numberList
             }
-            
-            async function addMergeConflictLabel(pullNumbers) {
-              let myMap = new Map();
-              const pullDetails = []
-              pullNumbers.forEach(async (number) => {
-                const pr = await github.rest.pulls.get({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  pull_number: number,
-                })
-                myMap.set(number, pr.data.mergeable_state)
-                
-                if (pr.data.mergeable_state == "dirty") {
-                  github.rest.issues.addLabels({
-                    issue_number: number,
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    labels: [MERGE_CONFLICT],
-                  })
-                }
 
+            async function getState(dict) {
+              const prNumbers = Object.keys(dict);
+              prNumbers.forEach(async (number) => {
+                  if (dict[number] == "unknown" || dict[number] == null) {
+                    const pr = await github.rest.pulls.get({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      pull_number: Number(number),
+                    })
+                    dict[number] = pr.data.mergeable_state
+                  }
               })
-              return myMap;
+              return dict
+            }
+            
+            const numbers = getPullsNumber();
+            var dict = {};
+            numbers.forEach((e)=> {
+                dict[e] = null;
+            })
+
+            let data = {}
+            for (let i=0; i < 5; i++) {
+                data = getState(dict)
+                const margeableStates = Object.values(dict);
+                const isUnknown = false
+                margeableStates.forEach((e) => {
+                    if (e === "unknown") { isUnknown = true }
+                })
+                if (isUnknown) { 
+                  await new Promise(resolve => setTimeout(resolve, 5000));
+                  continue;
+                } else break;
             }
 
-            const pullsNumber = await getPullsNumber();
-            const myMap = addMergeConflictLabel(pullsNumber);
-            # for (const [key, value] of myMap.entries()) {
-            #   console.log(key, value);
-            # }
-
-
-            # for(let i = 0; i < 5; i++){
-              
-            #   for (const [key, value] of myMap.entries()) {
-            #     if(value !== "unknown"){
-            #       myMap.delete(key);
-            #     }
-                
-            #   }
-            #   let newNumbers = Array.from(myMap.keys());
-            #   setTimeout( 5000);
-            #   const myMap = addMergeConflictLabel(newNumbers);
-            # }
-           
-            
+            for (const [key, value] of Object.entries(data)) {
+              if (value == "dirty") {
+                github.rest.issues.addLabels({
+                  issue_number: Number(key),
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  labels: [MERGE_CONFLICT],
+                })
+              }
+            }
