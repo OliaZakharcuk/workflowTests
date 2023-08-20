@@ -62,7 +62,7 @@ jobs:
                 const isUnknown = false
                 margeableStates.forEach((e) => {
                     console.log(e) 
-                    if (e === "unknown") { isUnknown = true }
+                    if (e === "unknown" || e == null) { isUnknown = true }
                 })
                 if (isUnknown) {
                   console.log("need rerun") 
