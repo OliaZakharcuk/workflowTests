@@ -54,13 +54,15 @@ jobs:
 
             let data = {}
             for (let i=0; i < 5; i++) {
+                console.log(i, "STEP!!!!!") 
                 data = getState(dict)
                 const margeableStates = Object.values(dict);
                 const isUnknown = false
                 margeableStates.forEach((e) => {
                     if (e === "unknown") { isUnknown = true }
                 })
-                if (isUnknown) { 
+                if (isUnknown) {
+                  console.log("need rerun") 
                   await new Promise(resolve => setTimeout(resolve, 5000));
                   continue;
                 } else break;
