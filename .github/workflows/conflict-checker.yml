@@ -41,6 +41,7 @@ jobs:
                       pull_number: Number(number),
                     })
                     dict[number] = pr.data.mergeable_state
+                    console.log(pr.data.mergeable_state) 
                   }
               })
               return dict
@@ -56,6 +57,7 @@ jobs:
             for (let i=0; i < 5; i++) {
                 console.log(i, "STEP!!!!!") 
                 data = getState(dict)
+                console.log(data, "Inside of retry")
                 const margeableStates = Object.values(dict);
                 const isUnknown = false
                 margeableStates.forEach((e) => {
