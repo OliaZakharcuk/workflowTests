@@ -30,8 +30,9 @@ jobs:
               prList.data.forEach((pr) => { numberList.push(pr.number) })
               return numberList
             }
-
+            
             async function addMergeConflictLabel(pullNumbers) {
+              var myMap = new Map();
               const pullDetails = []
               pullNumbers.forEach(async (number) => {
                 const pr = await github.rest.pulls.get({
@@ -39,7 +40,8 @@ jobs:
                   repo: context.repo.repo,
                   pull_number: number,
                 })
-
+                myMap.set(number, pr.data.mergeable_state)
+                
                 if (pr.data.mergeable_state == "dirty") {
                   github.rest.issues.addLabels({
                     issue_number: number,
@@ -50,9 +52,22 @@ jobs:
                 }
 
               })
+              return myMap;
             }
 
             const pullsNumber = await getPullsNumber();
-            addMergeConflictLabel(pullsNumber);
-            setTimeout(addMergeConflictLabel, 20000, pullsNumber)
+            const myMap = addMergeConflictLabel(pullsNumber);
+            for(let i = 0; i < 5; i++){
+              
+              for (const [key, value] of myMap.entries()) {
+                if(value !== "unknown"){
+                  myMap.delete(key);
+                }
+                
+              }
+              let newNumbers = Array.from(myMap.keys());
+              setTimeout( 5000);
+              const myMap = addMergeConflictLabel(newNumbers);
+            }
+           
             
