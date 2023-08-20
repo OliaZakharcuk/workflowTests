@@ -59,7 +59,7 @@ jobs:
                 data = await getState(dict)
                 console.log(data, "Inside of retry")
                 const margeableStates = Object.values(dict);
-                const isUnknown = false
+                let isUnknown = false
                 margeableStates.forEach((e) => {
                     console.log(e) 
                     if (e === "unknown" || e == null) { isUnknown = true }
