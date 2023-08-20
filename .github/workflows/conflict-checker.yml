@@ -59,6 +59,7 @@ jobs:
                 const margeableStates = Object.values(dict);
                 const isUnknown = false
                 margeableStates.forEach((e) => {
+                    console.log(e) 
                     if (e === "unknown") { isUnknown = true }
                 })
                 if (isUnknown) {
