@@ -25,9 +25,12 @@ jobs:
                 repo: context.repo.repo,
                 state: "open",
               });
-              const numberList = []
-              prList.data.forEach((pr) => { numberList.push(pr.number) })
-              return numberList
+
+              return prList.data.map(pr => pr.number)
+            }
+
+            function isStateDefined(element) {
+              return element == "unknown" || element == null
             }
 
             async function getState(dict) {
@@ -42,13 +45,35 @@ jobs:
               }
               return Promise.all(promisesArr)
             }
-            
+              
             const numbers = await getPullsNumber();
             var dict = {};
             numbers.forEach((e)=> {
                 dict[e] = null;
             })
-            
-            const state = await getState(dict)
-            state.forEach((prData) => { dict[prData.data.number] = prData.data.mergeable_state })
-            console.log(dict)
+
+            let data = {}
+            for (let i=0; i < 5; i++) {
+                data = await getPrData(dict)
+                data.forEach((prData) => { dict[prData.data.number] = prData.data.mergeable_state })
+                const margeableStates = Object.values(dict);
+                let isUnknown = false
+                margeableStates.forEach((e) => {
+                    if (isStateDefined(e)) { isUnknown = true }
+                })
+                if (isUnknown) {
+                  await new Promise(resolve => setTimeout(resolve, 5000));
+                  continue;
+                } else break;
+            }
+
+            for (const [key, value] of Object.entries(data)) {
+              if (value == "dirty") {
+                github.rest.issues.addLabels({
+                  issue_number: Number(key),
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  labels: [MERGE_CONFLICT],
+                })
+              }
+            }
