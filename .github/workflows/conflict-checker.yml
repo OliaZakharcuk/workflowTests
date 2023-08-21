@@ -25,7 +25,6 @@ jobs:
                 repo: context.repo.repo,
                 state: "open",
               });
-
               const numberList = []
               prList.data.forEach((pr) => { numberList.push(pr.number) })
               return numberList
