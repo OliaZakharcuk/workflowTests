@@ -37,11 +37,14 @@ jobs:
               const prNumbers = Object.keys(dict);
               const promisesArr = [];
               for( let i = 0; i < prNumbers.length; i++){
-                promisesArr.push(github.rest.pulls.get({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  pull_number: Number(prNumbers[i]),
-                }))
+                if (isStateDefined(dict[prNumbers[i]])) {
+                  console.log(dict[prNumbers[i]])
+                  promisesArr.push(github.rest.pulls.get({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    pull_number: Number(prNumbers[i]),
+                  }))
+                }
               }
               return Promise.all(promisesArr)
             }
@@ -69,7 +72,7 @@ jobs:
                 } else break;
             }
 
-            for (const [key, value] of Object.entries(data)) {
+            for (const [key, value] of Object.entries(dict)) {
               if (value == "dirty") {
                 github.rest.issues.addLabels({
                   issue_number: Number(key),
