@@ -33,7 +33,7 @@ jobs:
               return element == "unknown" || element == null
             }
 
-            async function getState(dict) {
+            async function getPrData(dict) {
               const prNumbers = Object.keys(dict);
               const promisesArr = [];
               for( let i = 0; i < prNumbers.length; i++){
