@@ -34,7 +34,7 @@ jobs:
               const prNumbers = Object.keys(dict);
 
               const promisesArr = await Promise.all(prNumbers.map(async (number) => {
-                github.rest.pulls.get({
+                await github.rest.pulls.get({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   pull_number: Number(number),
