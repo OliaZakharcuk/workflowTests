@@ -45,7 +45,7 @@ jobs:
               }
               return Promise.all(promisesArr)
             }
-              
+             
             const numbers = await getPullsNumber();
             var dict = {};
             numbers.forEach((e)=> {
