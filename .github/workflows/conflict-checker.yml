@@ -31,7 +31,7 @@ jobs:
               return numberList
             }
 
-            console.log(getPullsNumber())
+            console.log(await getPullsNumber())
 
             # async function getState(dict) {
             #   const prNumbers = Object.keys(dict);
