@@ -23,7 +23,7 @@ jobs:
               const prList = await github.rest.pulls.list({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                state: "open",
+                state: "closed",
               });
 
               const numberList = []
@@ -31,53 +31,55 @@ jobs:
               return numberList
             }
 
-            async function getState(dict) {
-              const prNumbers = Object.keys(dict);
-              prNumbers.forEach(async (number) => {
-                  if (dict[number] == "unknown" || dict[number] == null) {
-                    const pr = await github.rest.pulls.get({
-                      owner: context.repo.owner,
-                      repo: context.repo.repo,
-                      pull_number: Number(number),
-                    })
-                    dict[number] = pr.data.mergeable_state
-                    console.log(pr.data.mergeable_state) 
-                  }
-              })
-              return dict
-            }
+            console.log(getPullsNumber())
+
+            # async function getState(dict) {
+            #   const prNumbers = Object.keys(dict);
+            #   prNumbers.forEach(async (number) => {
+            #       if (dict[number] == "unknown" || dict[number] == null) {
+            #         const pr = await github.rest.pulls.get({
+            #           owner: context.repo.owner,
+            #           repo: context.repo.repo,
+            #           pull_number: Number(number),
+            #         })
+            #         dict[number] = pr.data.mergeable_state
+            #         console.log(pr.data.mergeable_state) 
+            #       }
+            #   })
+            #   return dict
+            # }
             
-            const numbers = await getPullsNumber();
-            var dict = {};
-            numbers.forEach((e)=> {
-                dict[e] = null;
-            })
+            # const numbers = await getPullsNumber();
+            # var dict = {};
+            # numbers.forEach((e)=> {
+            #     dict[e] = null;
+            # })
 
-            let data = {}
-            for (let i=0; i < 5; i++) {
-                console.log(i, "STEP!!!!!") 
-                data = await getState(dict)
-                console.log(data, "Inside of retry")
-                const margeableStates = Object.values(dict);
-                let isUnknown = false
-                margeableStates.forEach((e) => {
-                    console.log(e) 
-                    if (e === "unknown" || e == null) { isUnknown = true }
-                })
-                if (isUnknown) {
-                  console.log("need rerun") 
-                  await new Promise(resolve => setTimeout(resolve, 5000));
-                  continue;
-                } else break;
-            }
+            # let data = {}
+            # for (let i=0; i < 5; i++) {
+            #     console.log(i, "STEP!!!!!") 
+            #     data = await getState(dict)
+            #     console.log(data, "Inside of retry")
+            #     const margeableStates = Object.values(dict);
+            #     let isUnknown = false
+            #     margeableStates.forEach((e) => {
+            #         console.log(e) 
+            #         if (e === "unknown" || e == null) { isUnknown = true }
+            #     })
+            #     if (isUnknown) {
+            #       console.log("need rerun") 
+            #       await new Promise(resolve => setTimeout(resolve, 5000));
+            #       continue;
+            #     } else break;
+            # }
 
-            for (const [key, value] of Object.entries(data)) {
-              if (value == "dirty") {
-                github.rest.issues.addLabels({
-                  issue_number: Number(key),
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  labels: [MERGE_CONFLICT],
-                })
-              }
-            }
+            # for (const [key, value] of Object.entries(data)) {
+            #   if (value == "dirty") {
+            #     github.rest.issues.addLabels({
+            #       issue_number: Number(key),
+            #       owner: context.repo.owner,
+            #       repo: context.repo.repo,
+            #       labels: [MERGE_CONFLICT],
+            #     })
+            #   }
+            # }
