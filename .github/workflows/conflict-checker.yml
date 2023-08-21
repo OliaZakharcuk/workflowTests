@@ -33,7 +33,7 @@ jobs:
 
             async function getState(dict) {
               const prNumbers = Object.keys(dict);
-              const promisesArr = prNumbers.map( (number) => {        
+              const promisesArr = prNumbers.map(async (number) => {        
               github.rest.pulls.get({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
