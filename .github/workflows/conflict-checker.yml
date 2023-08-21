@@ -39,11 +39,8 @@ jobs:
                   repo: context.repo.repo,
                   pull_number: Number(prNumbers[i]),
                 }))
-                
               }
-              
-              console.log(promisesArr)
-              return promisesArr
+              return Promise.all(promisesArr)
             }
             
             const numbers = await getPullsNumber();
