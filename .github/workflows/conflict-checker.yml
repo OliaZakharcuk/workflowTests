@@ -25,13 +25,15 @@ jobs:
                 repo: context.repo.repo,
                 state: "closed",
               });
+              console.log(prList)
 
               const numberList = []
               prList.data.forEach((pr) => { numberList.push(pr.number) })
               return numberList
             }
 
-            console.log(await getPullsNumber())
+            const numbers = await getPullsNumber();
+            console.log(numbers)
 
             # async function getState(dict) {
             #   const prNumbers = Object.keys(dict);
