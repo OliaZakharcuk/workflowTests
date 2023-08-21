@@ -32,18 +32,17 @@ jobs:
 
             async function getState(dict) {
               const prNumbers = Object.keys(dict);
-              const promisesArr = prNumbers.map(async (number) => {        
+
+              const promisesArr = await Promise.all(prNumbers.map(async (number) => {
                 github.rest.pulls.get({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   pull_number: Number(number),
                 }) 
-              })
-              Promise.all(promisesArr).then(
-                (value) => {
-                  console.log(value);
-                });
-              return Promise.all(promisesArr)
+              }));
+
+              console.log(promisesArr)
+              return promisesArr
             }
             
             const numbers = await getPullsNumber();
@@ -51,5 +50,5 @@ jobs:
             numbers.forEach((e)=> {
                 dict[e] = null;
             })
-            console.log(await getState(dict))
+            console.log(getState(dict))
             
