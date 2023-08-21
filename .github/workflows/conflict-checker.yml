@@ -48,5 +48,7 @@ jobs:
             numbers.forEach((e)=> {
                 dict[e] = null;
             })
-            console.log(await getState(dict))
             
+            const state = await getState(dict)
+            state.forEach((prData) => { dict[prData.data.number] = prData.data.mergeable_state })
+            console.log(dict)
