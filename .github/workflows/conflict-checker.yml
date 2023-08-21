@@ -31,7 +31,7 @@ jobs:
               return numberList
             }
 
-            function getState(dict) {
+            async function getState(dict) {
               const prNumbers = Object.keys(dict);
               const promisesArr = prNumbers.map( (number) => {        
                 const pr =  github.rest.pulls.get({
@@ -40,8 +40,7 @@ jobs:
                   pull_number: Number(number),
                 })    
               })
-              const res = await Promise.all(promisesArr);
-              return res
+              return Promise.all(promisesArr)
             }
             
             const numbers = await getPullsNumber();
@@ -49,5 +48,5 @@ jobs:
             numbers.forEach((e)=> {
                 dict[e] = null;
             })
-            console.log(getState(dict))
+            console.log(await getState(dict))
             
