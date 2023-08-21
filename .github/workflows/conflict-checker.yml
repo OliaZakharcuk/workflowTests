@@ -38,7 +38,7 @@ jobs:
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   pull_number: Number(number),
-                }) 
+                })
               }));
 
               console.log(promisesArr)
@@ -50,5 +50,5 @@ jobs:
             numbers.forEach((e)=> {
                 dict[e] = null;
             })
-            console.log(getState(dict))
+            console.log(await getState(dict))
             
